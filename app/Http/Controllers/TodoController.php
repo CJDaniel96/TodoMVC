@@ -15,7 +15,9 @@ class TodoController extends Controller
      */
     public function index()
     {
-        return Todo::orderBy('created_at', 'DESC')->get();
+        $todo = Todo::orderBy('created_at', 'DESC')->get();
+
+        return response()->json($todo, 200);
     }
 
     /**
@@ -40,7 +42,7 @@ class TodoController extends Controller
         $newTodo->name = $request->item['name'];
         $newTodo->save();
 
-        return $newTodo;
+        return response()->json($newTodo, 201);
     }
 
     /**
@@ -78,7 +80,7 @@ class TodoController extends Controller
         $todo->completed_at = $request->item['completed'] ? Carbon::now() : null;
         $todo->save();
 
-        return $todo;
+        return response()->json($todo, 200);
     }
 
     /**
@@ -90,6 +92,6 @@ class TodoController extends Controller
     public function destroy(Todo $todo)
     {
         $todo->delete();
-        return "Todo successfully deleted.";
+        return response()->json(null, 204);
     }
 }

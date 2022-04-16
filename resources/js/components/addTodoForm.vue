@@ -1,7 +1,7 @@
 <template>
     <div class="addTodo">
         <input type="text" v-model="item.name" />
-        <font-awesome-icon icon="plus-square" @click="addTodo()" :class="[ item.name ? 'active' : 'inactive', 'plus' ]" />
+        <font-awesome-icon icon="plus-square" @click="addTodo()" :class="[ item.name ? 'active' : 'inactive', 'plus' ]"></font-awesome-icon>
     </div>
 </template>>
 
@@ -16,11 +16,22 @@ export default ({
     },
     methods: {
         addTodo() {
-            if( this.item.name == '' ) {
+            if( this.item.name == "" ) {
                 return;
             }
 
-            
+            axios.post('api/todo', {
+                item: this.item
+            })
+            .then( response => {
+                if( response.state == 201 ) {
+                    this.item.name = "";
+                    this.$emit('reloadlist');
+                }
+            })
+            .catch( error => {
+                console.log( error );
+            })
         }
     },
 })
